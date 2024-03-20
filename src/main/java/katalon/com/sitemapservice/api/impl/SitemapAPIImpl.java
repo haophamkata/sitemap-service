@@ -3,8 +3,9 @@ package katalon.com.sitemapservice.api.impl;
 
 import katalon.com.sitemapservice.api.SitemapAPI;
 import katalon.com.sitemapservice.dto.SitemapDTO;
+import katalon.com.sitemapservice.dto.TestCaseDTO;
 import katalon.com.sitemapservice.dto.UrlDTO;
-import katalon.com.sitemapservice.dto.UpdateRequestSitemapDTO;
+import katalon.com.sitemapservice.dto.UpdateStatusSitemapDTO;
 import katalon.com.sitemapservice.dto.response.Response;
 import katalon.com.sitemapservice.service.SitemapService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,8 +28,8 @@ public class SitemapAPIImpl implements SitemapAPI {
     }
 
     @Override
-    public Response update(List<UpdateRequestSitemapDTO> dto) {
-        return new Response(sitemapService.update(dto));
+    public Response update(UpdateStatusSitemapDTO dto) {
+        return new Response(sitemapService.updateStatus(dto.getUrls(), dto.getStatus()));
     }
 
     @Override
@@ -44,5 +45,15 @@ public class SitemapAPIImpl implements SitemapAPI {
     @Override
     public Response findUrl(String url) {
         return new Response(sitemapService.findUrl(url));
+    }
+
+    @Override
+    public Response createTestCase(TestCaseDTO dto) {
+        return new Response(sitemapService.createTestCase(dto));
+    }
+
+    @Override
+    public void updateExecutionIdByTestCaseId(String id, String executionId) {
+        sitemapService.updateExecutionIdByTestCaseId(id, executionId);
     }
 }

@@ -21,7 +21,6 @@ public class Sitemap {
     private String type;
     private String url;
     private String status;
-    private String executionId;
 
     public void updateStatusByUrl(String urlToUpdate, String newStatus) {
         // Update status if url matches
@@ -37,17 +36,4 @@ public class Sitemap {
         }
     }
 
-    public void updateExecutionIdByUrl(String urlToUpdate, String newExecutionId) {
-        // Update status if url matches
-        if (url != null && url.equals(urlToUpdate)) {
-            executionId = newExecutionId;
-        }
-
-        // Recursively call updateStatusByUrl for children
-        if (children != null) {
-            for (Sitemap child : children) {
-                child.updateExecutionIdByUrl(urlToUpdate, newExecutionId);
-            }
-        }
-    }
 }
