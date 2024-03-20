@@ -1,12 +1,14 @@
 package katalon.com.sitemapservice.service.impl;
 
 
-import katalon.com.sitemapservice.dto.SitemapDTO;
-import katalon.com.sitemapservice.dto.UpdateRequestSitemapDTO;
+import katalon.com.sitemapservice.dto.*;
 import katalon.com.sitemapservice.model.Sitemap;
+import katalon.com.sitemapservice.model.TestCase;
 import katalon.com.sitemapservice.model.WebsiteUrl;
+import katalon.com.sitemapservice.repository.TestCaseRepository;
 import katalon.com.sitemapservice.repository.WebsiteUrlRepository;
 import katalon.com.sitemapservice.service.SitemapService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import katalon.com.sitemapservice.repository.SitemapRepository;
@@ -16,6 +18,7 @@ import java.util.Optional;
 
 
 @Service
+@Slf4j
 public class SitemapServiceImpl implements SitemapService {
 
 
@@ -26,6 +29,8 @@ public class SitemapServiceImpl implements SitemapService {
     @Autowired
     private WebsiteUrlRepository websiteUrlRepository;
 
+    @Autowired
+    private TestCaseRepository testCaseRepository;
 
     @Override
     public Sitemap add(SitemapDTO dto) {
@@ -43,17 +48,15 @@ public class SitemapServiceImpl implements SitemapService {
     }
 
     @Override
-    public Sitemap update(List<UpdateRequestSitemapDTO> dtos) {
+    public Sitemap updateStatus(List<String> urls, String status) {
         Optional<Sitemap> sitemap = sitemapRepository.findAll().stream().findFirst();
         if(!sitemap.isPresent()) {
             return null;
         }
-        dtos.forEach(dto -> {
-            if(dto.getStatus() != null) {
-                sitemap.get().updateStatusByUrl(dto.getUrl(), dto.getStatus());
-            }
-            if(dto.getExecutionId() != null) {
-                sitemap.get().updateExecutionIdByUrl(dto.getUrl(), dto.getExecutionId());
+        urls.forEach(url -> {
+            if(status != null) {
+                log.info("Update status of url: " + url + " to " + status);
+                sitemap.get().updateStatusByUrl(url, status);
             }
             sitemapRepository.save(sitemap.get());
         });
@@ -82,5 +85,21 @@ public class SitemapServiceImpl implements SitemapService {
         websiteUrl.setUrl(url);
         websiteUrl.setStatus("PROCESSING");
         websiteUrlRepository.save(websiteUrl);
+    }
+
+    @Override
+    public TestCase createTestCase(TestCaseDTO dto) {
+        TestCase testCase = new TestCase();
+        testCase.setUrls(dto.getUrls());
+        testCase.setStatus("RUNNING");
+        return testCaseRepository.save(testCase);
+    }
+
+    @Override
+    public void updateExecutionIdByTestCaseId(String id, String executionId) {
+        testCaseRepository.findById(id).ifPresent(testCase -> {
+            testCase.setExecutionId(executionId);
+            testCaseRepository.save(testCase);
+        });
     }
 }
