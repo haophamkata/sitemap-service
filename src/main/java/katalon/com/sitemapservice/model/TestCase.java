@@ -20,4 +20,5 @@ public class TestCase {
     private String executionId;
     private String gptContent;
     private String testSpec;
+    private String siteMapId;
 }

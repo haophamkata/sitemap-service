@@ -24,14 +24,9 @@ public interface SitemapAPI {
     @PostMapping(path = SITEMAP)
     Response add(@RequestBody SitemapDTO dto);
 
-    @ApiOperation(value = "Update sitemap by customer", response = Response.class)
-    @PutMapping(path = SITEMAP)
-    Response update(@RequestBody UpdateStatusSitemapDTO dto);
-
-
-    @ApiOperation(value = "Get one", response = Response.class)
-    @GetMapping(path = SITEMAP)
-    Response findById();
+    @ApiOperation(value = "Get by Id", response = Response.class)
+    @GetMapping(path = SITEMAP + "/{id}")
+    Response findById(@PathVariable String id);
 
     @ApiOperation(value = "Order products by customer", response = Response.class)
     @PostMapping(path = URL)
@@ -39,7 +34,7 @@ public interface SitemapAPI {
 
     @ApiOperation(value = "Get one", response = Response.class)
     @GetMapping(path = URL + "/{url}")
-    Response findUrl(String url);
+    Response findUrl(@PathVariable String url);
 
     @ApiOperation(value = "Create test case", response = Response.class)
     @PostMapping(path = TESTCASE)
