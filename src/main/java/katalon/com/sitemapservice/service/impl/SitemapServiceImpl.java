@@ -48,8 +48,8 @@ public class SitemapServiceImpl implements SitemapService {
     }
 
     @Override
-    public Sitemap updateStatus(List<String> urls, String status) {
-        Optional<Sitemap> sitemap = sitemapRepository.findAll().stream().findFirst();
+    public Sitemap updateStatus(List<String> urls, String status, String id) {
+        Optional<Sitemap> sitemap = sitemapRepository.findById(id);
         if(!sitemap.isPresent()) {
             return null;
         }
@@ -66,8 +66,8 @@ public class SitemapServiceImpl implements SitemapService {
 
 
     @Override
-    public Sitemap findOne() {
-        Optional<Sitemap> sitemap = sitemapRepository.findAll().stream().findFirst();
+    public Sitemap findById(String id) {
+        Optional<Sitemap> sitemap = sitemapRepository.findById(id);
         return sitemap.orElse(null);
     }
 
@@ -91,6 +91,8 @@ public class SitemapServiceImpl implements SitemapService {
     public TestCase createTestCase(TestCaseDTO dto) {
         TestCase testCase = new TestCase();
         testCase.setUrls(dto.getUrls());
+        testCase.setSiteMapId(dto.getSiteMapId());
+        testCase.setTestSpec(dto.getTestSpec());
         testCase.setStatus("RUNNING");
         return testCaseRepository.save(testCase);
     }

@@ -1,4 +1,4 @@
-package vn.phh.product.utils;
+package katalon.com.sitemapservice.utils;
 
 public class Constants {
 
