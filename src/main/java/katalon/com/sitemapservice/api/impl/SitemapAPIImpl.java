@@ -12,8 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
-
 
 @RestController
 @RequestMapping(value = "/v1")
@@ -27,14 +25,10 @@ public class SitemapAPIImpl implements SitemapAPI {
         return new Response(sitemapService.add(dto));
     }
 
-    @Override
-    public Response update(UpdateStatusSitemapDTO dto) {
-        return new Response(sitemapService.updateStatus(dto.getUrls(), dto.getStatus()));
-    }
 
     @Override
-    public Response findById() {
-        return new Response(sitemapService.findOne());
+    public Response findById(String id) {
+        return new Response(sitemapService.findById(id));
     }
 
     @Override

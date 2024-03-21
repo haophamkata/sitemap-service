@@ -42,7 +42,7 @@ public class JobTestResult {
                     if (testCase.getExecutionId().equals(execution.getId()) && !execution.getStatus().equals("RUNNING")) {
                         testCase.setStatus(execution.getStatus());
                         testCaseRepository.save(testCase);
-                        sitemapService.updateStatus(testCase.getUrls(), execution.getStatus());
+                        sitemapService.updateStatus(testCase.getUrls(), execution.getStatus(), testCase.getSiteMapId());
                     }
                 });
             });

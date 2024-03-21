@@ -13,10 +13,9 @@ import java.util.List;
 @AllArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class TestCaseDTO {
-    private String requestGpt;
     private String testSpec;
     private List<String> urls;
-
+    private String siteMapId;
 }
 
 
